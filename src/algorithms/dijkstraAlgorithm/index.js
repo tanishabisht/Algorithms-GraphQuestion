@@ -1,24 +1,5 @@
-import { alphaVal } from './helpers'
-
-
-// using adjacencyMatrix
-export const route_distance = (adjacencyMatrix, alphaRoute) => {
-    const maxNum = Number.MAX_SAFE_INTEGER
-    const numRoute = []
-    let distance = 0
-    for (let node of alphaRoute) numRoute.push(alphaVal(node))
-    for(let i=0; i<numRoute.length-1; i++) {
-        const fromNode = numRoute[i]
-        const toNode = numRoute[i+1]
-        if(adjacencyMatrix[fromNode][toNode] == maxNum) return 'NO SUCH ROUTE'
-        distance += adjacencyMatrix[fromNode][toNode]
-    }
-    return distance
-}
-
-
 // find shortest distance from a Node to all other nodes
-const dijkstraAlgo = function (graph, start) {
+const dijkstraAlgorithm = function (graph, start) {
 
     const maxNum = Number.MAX_SAFE_INTEGER
     const noOfNodes = graph.length
@@ -68,39 +49,7 @@ const dijkstraAlgo = function (graph, start) {
         // we have visited this node
         nodeVisited[shortestDistanceIdx] = true;
     }
-
     return distances
 };
-export const findShortestDistance_to_and_from = (graph, from, to) => {
-    const shortestDistance = dijkstraAlgo(graph, alphaVal(from))
-    return shortestDistance[alphaVal(to)]
-}
 
-
-
-export const count_stops = (graph, src, dst, noOfEdges) => {
-    const graphLen = graph.length
-    // Base cases
-    if (noOfEdges == 1 && graph[src][dst]) return 1;
-    if (noOfEdges <= 0) return 0;
-    // Initialize result
-    var count = 0;
-    // Go to all adjacents of u and recur
-    for (var i=0; i<graphLen; i++)
-        if (graph[src][i] == 1) // Check if is adjacent of src
-            count += count_stops(graph, i, dst, noOfEdges - 1);
-    return count;
-}
-export const count_stops_lessthan_given_edge = (graph, src, dst, noOfEdges) => {
-    let counter = 0
-    for(let i=1; i<=noOfEdges; i++){
-        counter += count_stops(graph, src, dst, i)
-    }
-    return counter
-}
-
-
-
-
-
-
+export default dijkstraAlgorithm
