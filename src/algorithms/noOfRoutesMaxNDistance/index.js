@@ -1,11 +1,12 @@
 import { edgeList } from '../../variables/graphRepresentations'
 
-const weightOfPath = (map) => {
+// nodeArr => array of nodes
+const weightOfPath = (nodeArr) => {
     let distance = 0
-    for (let index = 0; index < map.length - 1; index++) {
-        const start = map[index]
-        const end = map[index + 1]
-        const way = edgeList.find(node => node[0] === start && node[1] === end)
+    for (let index = 0; index < nodeArr.length - 1; index++) {
+        const src = nodeArr[index]
+        const dst = nodeArr[index + 1]
+        const way = edgeList.find(node => node[0]===src && node[1]===dst)
         if (!way) {
             distance = 'NO SUCH ROUTE'
             break
@@ -16,6 +17,7 @@ const weightOfPath = (map) => {
     return distance
 }
 
+// trip => nodes travelled so far
 const noOfRoutesMaxNDistance = (trip, src, dst, distanceAllowed) => {
     const soFar = [...trip, src]
     const distanceSoFar = weightOfPath(soFar)

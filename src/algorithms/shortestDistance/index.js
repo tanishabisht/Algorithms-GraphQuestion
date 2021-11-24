@@ -1,9 +1,10 @@
 import { alphaToNum } from '../../helper'
 import { dijkstraAlgorithm } from '..'
 
-const shortestDistance = (graph, from, to) => {
-    const shortestDistance = dijkstraAlgorithm(graph, alphaToNum(from))
-    return shortestDistance[alphaToNum(to)]
+// graph => adjacencyMatrix
+const shortestDistance = (graph, src, dst) => {
+    const shortestDistance = dijkstraAlgorithm(graph, alphaToNum(src))
+    return shortestDistance[alphaToNum(dst)]
 }
 
 export default shortestDistance

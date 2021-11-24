@@ -1,4 +1,7 @@
-// find shortest distance from a Node to all other nodes
+
+// Algorithm to find shortest distance from a node to all other nodes
+// graph => adjacencyMatrix
+
 const dijkstraAlgorithm = function (graph, start) {
 
     const maxNum = Number.MAX_SAFE_INTEGER

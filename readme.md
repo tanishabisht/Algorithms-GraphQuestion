@@ -60,3 +60,34 @@ Output # 10: 7
 
 # Tech Used
 `javascript` `mocha`
+
+# References and my learning journey
+1. Different ways to represent graph: Refer [this](https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs)
+    - Edge list
+    - Adjacency Matrix
+    - Adjacency List
+2. Quick Introduction to Graphs, refer [this](https://www.youtube.com/watch?v=tWVWeAqZ0WU&t=3787s)
+3. Different algorithms to find the shortest path between two nodes in a graph. Refer [this](https://www.youtube.com/watch?v=09_LlHjoEiY&t=2s)
+    - Dijkstra's Algorithm : `O(v^2)` : Uses Greedy Algorithm. Does not work with negative weights. Works on both directed and undirected graph.
+    - Bellman Ford : `O(ve)` : Uses DP, works even with negative weights
+    - Floyd Warshall Algorithm : `O(v^3)` : Finds the shortest path for all pairs
+
+
+# Approach
+1. Route Distance
+    - it is the sum of all edges in a route
+    - return `NO SUCH ROUTES` if the routes does not exist
+2. Number of Routes with N stops
+    - N stops is the same as N number of edges
+    - It is a recursive function that terminates when
+        - number of edges < 0 => 0
+        - number of edges is 1 and there exist a route between source and destination
+    - otherwise loop through the row of the src and if route is found, recursively call the function again (this time with 1 less number of edges)
+3. Number of Routes with max N stops
+    - Iteratively call `2nd function`
+4. Shortest Route Algorithm
+    - I went ahead with `Dijkstra's Algorithm` as it has less time complexity (compared to Floyd Warshall Algorithm) and the weights can't be negative as the distance between two places cant be negative.
+5. Number of Routes with max N distance
+    - It is a recursive function that terminates when
+        - distance travelled so far > distance allowed to travel => 0
+    - Otherwise it increments 1 to the counter if the src equals destination
