@@ -133,18 +133,99 @@ const findShortestDistance_to_and_from = (graph, from, to) => {
 }
 
 
+const adjacencyList_with_no_weights = (adjacencyList) => {
+    const adjacencyList_no_wts = []
+    for (let i in adjacencyList) {
+        const neighbour_with_weights = adjacencyList[i]
+        const neighbour_without_weights = neighbour_with_weights ? neighbour_with_weights.map(([n,l]) => n) : []
+        adjacencyList_no_wts.push(neighbour_without_weights)
+    }
+    return adjacencyList_no_wts 
+}
+const adjacencyMatrix_with_no_weights = (adjacencyMatrix) => {
+    const maxNum = Number.MAX_SAFE_INTEGER
+    const newMatrix = []
+    for(let i of adjacencyMatrix) {
+        const row = []
+        for(let j of i) {
+            if(j==maxNum) row.push(0)
+            else row.push(1)
+        }
+        newMatrix.push(row)
+    }
+    return newMatrix
+}
+const count_stops = (graph, src, dst, noOfEdges) => {
 
+    const graphLen = graph.length
 
-
-
+    // Base cases
+    // if (noOfEdges == 0 && src == dst) return 1;
+    if (noOfEdges == 1 && graph[src][dst]) return 1;
+    if (noOfEdges <= 0) return 0;
+ 
+    // Initialize result
+    var count = 0;
+ 
+    // Go to all adjacents of u and recur
+    for (var i=0; i<graphLen; i++)
+        if (graph[src][i] == 1) // Check if is adjacent of src
+            count += count_stops(graph, i, dst, noOfEdges - 1);
+ 
+    return count;
+}
+const count_stops_lessthan_given_edge = (graph, src, dst, noOfEdges) => {
+    let counter = 0
+    for(let i=1; i<=noOfEdges; i++){
+        counter += count_stops(graph, src, dst, i)
+    }
+    return counter
+}
 
 
 const inputString = 'AB5,BC4,CD8,DC8,DE6,AD5,CE2,EB3,AE7'
-
 const edgeList = stringInput_to_edgeList(inputString)
-const adjacencyList = edgeList_to_adjacencyList(edgeList)
-const adjacencyMatrix = edgeList_to_adjacencyMatrix(edgeList)
 
+const weightOfPath = (map) => {
+    let distance = 0
+    for (let index = 0; index < map.length - 1; index++) {
+        const start = map[index]
+        const end = map[index + 1]
+        const way = edgeList.find(node => node[0] === start && node[1] === end)
+        if (!way) {
+            distance = 'NO SUCH ROUTE'
+            break
+        } else {
+            distance += way[2]
+        }
+    }
+    return distance
+}
+const measureTrips = (trip, src, dst, distanceAllowed) => {
+    const soFar = [...trip, src]
+    const distanceSoFar = weightOfPath(soFar)
+    if (distanceSoFar < distanceAllowed && src === dst && soFar.length > 1) {
+        return (
+            1 + [...edgeList]
+            .filter(node => node[0] === src)
+            .reduce((sum, node) => sum + measureTrips(soFar, node[1], dst, distanceAllowed), 0)
+        )
+    }
+    else if (distanceSoFar >= distanceAllowed) return 0
+    else return [...edgeList]
+            .filter(node => node[0] === src)
+            .reduce((sum, node) => sum + measureTrips(soFar, node[1], dst, distanceAllowed), 0)
+}
+
+
+
+
+// const inputString = 'AB5,BC4,CD8,DC8,DE6,AD5,CE2,EB3,AE7'
+// const edgeList = stringInput_to_edgeList(inputString)
+const adjacencyList = edgeList_to_adjacencyList(edgeList)
+const adjacencyList_no_wts = adjacencyList_with_no_weights(adjacencyList)
+const adjacencyMatrix = edgeList_to_adjacencyMatrix(edgeList)
+const adjacencyMatrix_no_wts = adjacencyMatrix_with_no_weights(adjacencyMatrix)
 
 // PART 1 :: FIND ROUTE DISTANCE
 const path_abc = ['A', 'B', 'C']
@@ -162,7 +243,10 @@ const route_dist_aed = route_distance(adjacencyMatrix, path_aed)
 console.log(route_dist_abc, route_dist_ad, route_dist_adc, route_dist_aebcd, route_dist_aed)
 
 
-// PART 2 :: FIND NUMBER OF PATHS WITH X NUMBER OF STOPS
+// PART 2 :: FIND NUMBER OF PATHS FROM ONE NODE TO ANOTHER GIVEN EDGE
+const stops_cc_max3 = count_stops_lessthan_given_edge(adjacencyMatrix_no_wts, 2, 2, 3)
+const stops_ac_4 = count_stops(adjacencyMatrix_no_wts, 0, 2, 4)
+console.log(stops_cc_max3, stops_ac_4)
 
 
 // PART 3 :: FIND SHORTEST DISTANCE
@@ -171,5 +255,6 @@ const dist_bb = findShortestDistance_to_and_from(adjacencyMatrix, 'B', 'B')
 console.log(dist_ac, dist_bb)
 
 
-
-// PART 4 :: FIND NUMBER OF PATHS WITH TOTAL DISTANCE LESS THAN GIVEN X
+// PART 4 :: NUMBER OF ROUTES FROM ONE NODE TO ANOTHER WITHIN SPECIFIED DISTANCE
+const pathsNum = measureTrips([], alphaVal('C'), alphaVal('C'), 30)
+console.log(pathsNum)
