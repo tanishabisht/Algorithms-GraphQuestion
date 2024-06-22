@@ -1,93 +1,89 @@
-# Graph Exercise
+# Graph Question
+This repository contains solutions to a graph-based challenge involving a directed graph representing cities and train routes. The goal is to calculate distances, find routes, and determine the shortest paths between cities.
 
-The local passenger railway serves a number of cities. For financial reasons, all train lines follow only one direction. That is a route from city X to city Y, it does not mean that there is a route from city Y to city X and even if this route exists there would be a different railway line that could have a greater distance.
 
-The purpose of this challenge is to help the railroad provide its customers with information about the routes. In particular, you will calculate the distance along a given route, the number of different routes between two cities and the shortest route between two cities.
+## Problem Description
+The local passenger railway serves several cities, and all train routes follow one direction. This means a route from city X to city Y does not imply a route from city Y to city X.
 
-1. The distance of the route A-B-C.
-2. The distance of the route A-D.
-3. The distance of the route A-D-C.
-4. The distance of the route A-E-B-C-D.
-5. The distance of the route A-E-D.
-6. The number of trips starting at C and ending at C with a maximum of 3 stops. In the sample data below, there are two such trips: C-D-C (2 stops) and C-E-B-C (3 stops).
-7. The number of trips starting at A and ending at C with exactly 4 stops. In the sample data below, there are three such trips: A to C (via B,C,D); A to C (via D,C,D); and A to C (via D,E,B).
-8. The length of the shortest route (in terms of distance to travel) from A to C.
-9. The length of the shortest route (in terms of distance to travel) from B to B.
-10. The number of different routes from C to C with a distance of less than 30. In the sample data, the trips are: CDC, CEBC, CEBCDC, CDCEBC, CDEBC, CEBCEBC, CEBCEBCEBC.
+## Tasks
+1. **Route distance**: Calculate the distance of specific routes. Given routes are:
+    - A-B-C
+    - A-D
+    - A-D-C
+    - A-E-B-C-D
+    - A-E-D
+2. **Number of routes between two cities**:
+   - Trips starting at C and ending at C with a maximum of 3 stops.
+   - Trips starting at A and ending at C with exactly 4 stops.
+3. **Shortest Route between two cities**:
+   - Shortest route from A to C.
+   - Shortest route from B to B.
+4. **Routes with Distance Constraint**:
+   - Number of different routes from C to C with a distance less than 30.
 
-# Input
-A directed graph where a node represents a city and an edge represents a route between two cities. The edge weighting represents the distance between the two cities. A certain route will never appear more than once for a particular trip, the starting and ending city will not be the same city.
+## Input
+A directed graph where nodes represent cities and edges represent routes between cities. The edge weights represent the distance between cities. Each route appears only once, and no route starts and ends at the same city.
+
 ```
-AB5,BC4,CD8,DC8,DE6,AD5,CE2,EB3,AE7
-```
-
-# Output
-For values from 1 to 5, if there is no such route, show something like "NO SUCH ROUTE". Otherwise, follow the indicated route and do not make any extra stops! For example, the value 1 to 5 means that the trip will start in city A, then the trip will continue directly to city B (at a distance of 5), then directly to city C (at a distance of 4).
-```
-Output # 1: 9
-Output # 2: 5
-Output # 3: 13
-Output # 4: 22
-Output # 5: NO SUCH ROUTE
-Output # 6: 2
-Output # 7: 3
-Output # 8: 9
-Output # 9: 9
-Output # 10: 7
-```
-
-# Positive Testing Result
-```
-  Testing Outputs
-    Return distance of the given route
-      √ Should be the sum of the weights of all the edges in the route or NO SUCH ROUTE if there is none
-    Number of routes starting and ending at the same place with at Max N stops
-      √ Should be finite and fixed amount of routes
-    Calculating the number of trips starting and ending at the same place with at least N stops
-      √ Should be only a fixed amount of routes
-    Testing the shortest distance algorithm :: dijkstra
-      √ Should return second shortest distance if the src and dst node is same
-    Number of routes with distance less than N
-      √ Should the number of routes with distance less than N
+AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7
 ```
 
 
-# Instructions to run
-- `npm install`: Install all the dependencies
-- `npm start`: will display the required output
-- `npm test`: will run tests
-- The input string can be changed [here](src/variables/config/index.js)
+## Output
 
-# Tech Used
-`javascript` `mocha`
+1. **Distance of the Given Route**<br>
+  Returns the sum of the weights of all edges in the route or "NO SUCH ROUTE" if there is none.<br>
 
-# References and my learning journey
-1. Different ways to represent graph: Refer [this](https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs)
+2. **Number of Routes with N Stops**<br>
+  Finite and fixed number of routes.<br>
+
+3. **Shortest Distance Algorithm (Dijkstra)** <br>
+  Returns the shortest distance, even if the source and destination nodes are the same.<br>
+
+4. **Number of Routes with Distance Less than N** <br>
+  Counts the number of routes with a total distance less than the specified value. <br>
+
+
+## Instructions to Run
+1. `npm install`: Install all the dependencies
+2. `npm start`: will display the required output
+3. `npm test`: will run tests
+4. Change the input string in [config/index.js](src/variables/config/index.js) as needed.
+
+
+## Learning Resources
+
+1. **Graph Representation**: Learn about different ways to represent a graph. Refer [this](https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs).
     - Edge list
     - Adjacency Matrix
     - Adjacency List
-2. Quick Introduction to Graphs, refer [this](https://www.youtube.com/watch?v=tWVWeAqZ0WU&t=3787s)
-3. Different algorithms to find the shortest path between two nodes in a graph. Refer [this](https://www.youtube.com/watch?v=09_LlHjoEiY&t=2s)
-    - Dijkstra's Algorithm : `O(v^2)` : Uses Greedy Algorithm. Does not work with negative weights. Works on both directed and undirected graph.
-    - Bellman Ford : `O(ve)` : Uses DP, works even with negative weights
-    - Floyd Warshall Algorithm : `O(v^3)` : Finds the shortest path for all pairs
 
+2. **Introduction to Graphs**: [YouTube Video](https://www.youtube.com/watch?v=tWVWeAqZ0WU&t=3787s)
 
-# Approach
-1. Route Distance
-    - it is the sum of all edges in a route
-    - return `NO SUCH ROUTES` if the routes does not exist
-2. Number of Routes with N stops
+3. **Shortest Path Algorithms**: [YouTube Video](https://www.youtube.com/watch?v=09_LlHjoEiY&t=2s)
+    - Dijkstra's Algorithm: `O(v^2)`, uses Greedy Algorithm, works on both directed and undirected graphs, and does not handle negative weights.
+    - Bellman-Ford Algorithm: `O(ve)`, uses Dynamic Programming, works with negative weights.
+    - Floyd-Warshall Algorithm: `O(v^3)`, finds the shortest path for all pairs.
+
+## Approach
+
+1. **Route Distance**: Sum of all edges in a route. Returns "NO SUCH ROUTE" if the route doesn't exist.
+
+2. **Number of Routes with N Stops**: A recursive function that counts the number of routes with exactly N stops.
     - N stops is the same as N number of edges
     - It is a recursive function that terminates when
-        - number of edges < 0 => 0
+        - number of edges < 0 --> return 0
         - number of edges is 1 and there exist a route between source and destination
     - otherwise loop through the row of the src and if route is found, recursively call the function again (this time with 1 less number of edges)
-3. Number of Routes with max N stops
-    - Iteratively call `2nd function`
-4. Shortest Route Algorithm
-    - I went ahead with `Dijkstra's Algorithm` as it has less time complexity (compared to Floyd Warshall Algorithm) and the weights can't be negative as the distance between two places cant be negative.
-5. Number of Routes with max N distance
-    - It is a recursive function that terminates when
-        - distance travelled so far > distance allowed to travel => 0
-    - Otherwise it increments 1 to the counter if the src equals destination
+    
+3. **Number of Routes with Max N Stops**: Iteratively calls the function for routes with N stops.
+
+4. **Shortest Route**: Uses Dijkstra's Algorithm for efficiency, as distances cannot be negative.
+
+5. **Number of Routes with Max N Distance**: A recursive function that counts routes with a total distance less than a specified value.
+    - It is a recursive function that terminates when: `distance travelled so far > distance allowed to travel => 0`
+    - Otherwise it increments 1 to the counter if the src = destination
+
+
+## Technologies Used
+`JavaScript` `Mocha`
